@@ -1,22 +1,39 @@
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const Visualizer = require('webpack-visualizer-plugin');
+// const Visualizer = require('webpack-visualizer-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 const baseConfig = require('./webpack.base.config');
 
-const prodConfiguration = () => {
-  return merge([
+const prodConfiguration = () =>
+  merge([
     {
       output: {
         publicPath: '/',
         filename: '[name].[contenthash].js',
       },
       optimization: {
-        minimizer: [new UglifyJsPlugin(), new OptimizeCssAssetsPlugin()],
+        minimizer: [
+          new ESBuildMinifyPlugin({
+            target: 'es2015', // Syntax to compile to (see options below for possible values)
+            css: true,
+            drop: ['console', 'debugger'],
+          }),
+          // new TerserPlugin({
+          //   // sourceMap: true, // Must be set to true if using source-maps in production
+          //   terserOptions: {
+          //     compress: {
+          //       drop_console: true,
+          //     },
+          //   },
+          // }),
+          // new OptimizeCssAssetsPlugin(),
+        ],
         splitChunks: {
           chunks: 'all',
         },
@@ -26,11 +43,11 @@ const prodConfiguration = () => {
       },
 
       plugins: [
-        new webpack.HashedModuleIdsPlugin(),
+        new webpack.ids.HashedModuleIdsPlugin(),
         new MiniCssExtractPlugin({
           filename: '[name].[contenthash].css',
         }),
-        new Visualizer({ filename: './statistics.html' }),
+        // new Visualizer({ filename: './statistics.html' }),
         new CompressionPlugin({
           algorithm: 'gzip',
           test: /\.js$|\.css$|\.html$/,
@@ -38,11 +55,8 @@ const prodConfiguration = () => {
           minRatio: 0,
         }),
       ],
-      devtool: '',
+      // devtool: '',
     },
   ]);
-};
 
-module.exports = (env) => {
-  return merge(baseConfig(env), prodConfiguration(env));
-};
+module.exports = (env) => merge(baseConfig(env), prodConfiguration(env));
