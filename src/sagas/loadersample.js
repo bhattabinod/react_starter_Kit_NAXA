@@ -17,28 +17,12 @@ function getMoreContent(payload) {
 }
 
 export function* getDashboardRequest(action) {
-  const { type } = action;
   try {
-    yield put(
-      loaderActions.startAction({
-        action: {
-          actionName: type,
-        },
-      }),
-    );
     yield delay(2000);
     yield put(loadersampleActions.getDashboardSuccess('This is Dashboard Data '));
     yield put(toastActions.success({ message: `Succeefully fetched Dashboard Data` }));
   } catch (error) {
     yield put(toastActions.error({ message: error?.response?.data?.message }));
-  } finally {
-    yield put(
-      loaderActions.stopAction({
-        action: {
-          actionName: type,
-        },
-      }),
-    );
   }
 }
 export function* getMoreContentRequest(action) {
@@ -51,7 +35,7 @@ export function* getMoreContentRequest(action) {
   }
 }
 function* registerWatcher() {
-  yield takeLatest(Types.GET_DASHBOARD_REQUEST, getDashboardRequest);
+  yield takeLatest(Types.GET_DASHBOARD_REQUEST, withLoader(getDashboardRequest));
   yield takeEvery(Types.GET_MORE_CONTENT_REQUEST, withLoader(getMoreContentRequest));
 }
 

@@ -7,14 +7,7 @@ import loaderActions from '@Actions/loader.actions';
 export function* getTopicRequest(action) {
   const { type, payload } = action;
   try {
-    yield put(
-      loaderActions.startAction({
-        action: {
-          name: type,
-          params: payload,
-        },
-      }),
-    );
+   
     const response = yield call(getTopic);
     // yield delay(5000);
     yield put(topicActions.getTopicSuccess({ data: response.data }));
@@ -22,17 +15,11 @@ export function* getTopicRequest(action) {
   } catch (error) {
     yield put(topicActions.getTopicFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));
-  } finally {
-    yield put(
-      loaderActions.stopAction({
-        name: type,
-      }),
-    );
   }
 }
 
 function* topicWatcher() {
-  yield takeLatest(Types.GET_TOPIC_REQUEST, getTopicRequest);
+  yield takeLatest(Types.GET_TOPIC_REQUEST, withLoader(getTopicRequest));
 }
 
 export default topicWatcher;
