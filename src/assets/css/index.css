@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .dashboard,
 .form-signin {
   max-width: 330px;
@@ -123,33 +127,31 @@
   opacity: 0.5;
 }
 
-
-.nav-wrapper ul li{
-  list-style: none; 
-  display: inline; 
+.nav-wrapper ul li {
+  list-style: none;
+  display: inline;
   margin-right: 10px;
-
 }
 
-.nav-wrapper ul{
-  margin:0px;
+.nav-wrapper ul {
+  margin: 0px;
   padding: 0px;
 }
 
-nav::before{
-padding: 0px;
+nav::before {
+  padding: 0px;
 }
 
-.wrapper{
+.wrapper {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
 }
 
-.loader_item{
+.loader_item {
   width: 200px;
   height: 200px;
-  margin:30px;
+  margin: 30px;
   flex: 1 1 auto;
 }
