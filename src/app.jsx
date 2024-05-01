@@ -5,9 +5,12 @@ import { Switch, Route, Link } from 'react-router-dom';
 import PrivateRoute from '@Components/common/PrivateRoute';
 import Toast from '@Components/common/Toast';
 import indexRoutes from './routes';
+import Users from '@Components/common/User/user';
+import Weather from '@Components/weather/weather';
 
 function generateRoutes(routes) {
   return (
+    <>
     <Switch>
       {routes.map((route) =>
         Array.isArray(route.component) ? (
@@ -21,11 +24,15 @@ function generateRoutes(routes) {
         ),
       )}
     </Switch>
+
+    </>
   );
 }
 
 function App() {
   return (
+    <>
+    <Users/>
     <div className="container">
       <Toast />
       <nav className="nav-wrapper">
@@ -43,6 +50,11 @@ function App() {
       </nav>
       {generateRoutes(indexRoutes)}
     </div>
+    <div className='naxatw-mt-6'>
+      <Weather/>
+    </div>
+    
+    </>
   );
 }
 

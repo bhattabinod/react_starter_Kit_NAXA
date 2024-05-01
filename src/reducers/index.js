@@ -7,6 +7,9 @@ import toast from './toast';
 import topic from './topic';
 import loader from './loader.reducer';
 import loadersample from './loadersample';
+import myFirstReducer from './user';
+import mySecondReducer from './post';
+import weatherReducer from './weather';
 
 export default combineReducers({
   router: connectRouter(history),
@@ -16,4 +19,7 @@ export default combineReducers({
   topic,
   loader,
   loadersample,
+  myFirstReducer,
+  mySecondReducer,
+  weatherr: weatherReducer,
 });
